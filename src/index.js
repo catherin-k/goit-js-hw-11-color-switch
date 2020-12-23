@@ -19,14 +19,32 @@ const randomIntegerFromInterval = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
-refs.startBtn.addEventListener("click", onChangeColor());
-
 // console.dir(refs.body.style.backgroundColor);
 // console.log(colors[randomIntegerFromInterval(0, 5)]);
 
-function onChangeColor() {
-  setInterval(() => {
-    let color = colors[randomIntegerFromInterval(0, colors.length)];
-    refs.body.style.backgroundColor = color;
-  }, 1000);
-}
+const onChangeColor = {
+  intervalId: null,
+  isActive: false,
+  start() {
+    if (this.isActive) {
+      return;
+    }
+    this.isActive = true;
+    this.intervalId = setInterval(() => {
+      let color = colors[randomIntegerFromInterval(0, colors.length)];
+      refs.body.style.backgroundColor = color;
+    }, 1000);
+  },
+  stop() {
+    clearInterval(this.intervalId);
+    this.intervalId = null;
+    this.isActive = false;
+    refs.body.style.backgroundColor = " ";
+  },
+};
+
+refs.startBtn.addEventListener(
+  "click",
+  onChangeColor.start.bind(onChangeColor),
+);
+refs.stopBtn.addEventListener("click", onChangeColor.stop.bind(onChangeColor));
