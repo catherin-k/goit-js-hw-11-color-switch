@@ -30,6 +30,7 @@ const onChangeColor = {
       return;
     }
     this.isActive = true;
+    refs.startBtn.disabled = true;
     this.intervalId = setInterval(() => {
       let color = colors[randomIntegerFromInterval(0, colors.length)];
       refs.body.style.backgroundColor = color;
@@ -37,8 +38,10 @@ const onChangeColor = {
   },
   stop() {
     clearInterval(this.intervalId);
+    refs.startBtn.disabled = false;
     this.intervalId = null;
     this.isActive = false;
+
     refs.body.style.backgroundColor = " ";
   },
 };
